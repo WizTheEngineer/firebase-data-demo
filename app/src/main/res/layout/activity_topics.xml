@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_topics"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.waynejackson.firebasedatademo.topics.TopicsActivity">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/topics_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:clipToPadding="false"
+        android:padding="5dp"
+        android:scrollbars="vertical"
+        tools:listitem="@layout/item_topic" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_topic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        app:srcCompat="@drawable/ic_add_24dp"/>
+</FrameLayout>
