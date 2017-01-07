@@ -1,4 +1,4 @@
-package com.waynejackson.firebasedatademo;
+package com.waynejackson.firebasedatademo.utils;
 
 import java.util.Random;
 

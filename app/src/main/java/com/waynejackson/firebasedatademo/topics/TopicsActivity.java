@@ -22,7 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.waynejackson.firebasedatademo.R;
-import com.waynejackson.firebasedatademo.RandomSentenceGenerator;
+import com.waynejackson.firebasedatademo.utils.RandomSentenceGenerator;
 import com.waynejackson.firebasedatademo.topics.data.FirebaseForumTopicService;
 import com.waynejackson.firebasedatademo.topics.models.ForumTopic;
 import com.waynejackson.firebasedatademo.topics.viewholder.TopicsViewHolder;
