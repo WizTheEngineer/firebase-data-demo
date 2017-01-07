@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,7 +70,7 @@ public class TopicsActivity extends AppCompatActivity {
             }
         });
 
-        mAdapter = new TopicsAdapter(this);
+        mAdapter = new TopicsAdapter(mAuth.getCurrentUser(), this);
         mTopicRecycler.setAdapter(mAdapter);
         mTopicService.registerToTopicUpdates(mTopicsListener);
     }
@@ -132,11 +133,13 @@ public class TopicsActivity extends AppCompatActivity {
 
     private class TopicsAdapter extends RecyclerView.Adapter<TopicsViewHolder> {
 
+        private FirebaseUser mCurrentUser;
         private LayoutInflater mLayoutInflater;
         private List<String> mKeys;
         private List<ForumTopic> mTopics;
 
-        public TopicsAdapter(Context context) {
+        public TopicsAdapter(FirebaseUser currentUser, Context context) {
+            mCurrentUser = currentUser;
             mLayoutInflater = LayoutInflater.from(context);
             mKeys = Lists.newArrayList();
             mTopics = Lists.newArrayList();
@@ -149,9 +152,14 @@ public class TopicsActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onBindViewHolder(TopicsViewHolder holder, int position) {
+        public void onBindViewHolder(TopicsViewHolder holder, final int position) {
             ForumTopic topic = mTopics.get(position);
-            holder.bindToTopic(topic);
+            holder.bindToTopic(mCurrentUser, topic, new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mTopicService.deleteForumTopic(mCurrentUser, mKeys.get(position));
+                }
+            });
         }
 
         @Override

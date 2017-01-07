@@ -3,10 +3,13 @@ package com.waynejackson.firebasedatademo.topics.data;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.common.base.Preconditions;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import android.support.annotation.NonNull;
 
 import com.waynejackson.firebasedatademo.topics.models.ForumTopic;
 
@@ -38,7 +41,10 @@ public class FirebaseForumTopicService {
         return INSTANCE;
     }
 
-    public void submitForumTopic(FirebaseUser user, String title) {
+    public void submitForumTopic(@NonNull FirebaseUser user, @NonNull String title) {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(title);
+
         String key = mDatabase.child(TOPICS_KEY).push().getKey();
         ForumTopic topic = new ForumTopic(title, user.getEmail(), user.getUid());
         Map<String, Object> topicValues = topic.toMap();
@@ -58,5 +64,17 @@ public class FirebaseForumTopicService {
 
     public void unregisterFromTopicUpdates(ChildEventListener listener) {
         mDatabase.child(TOPICS_KEY).removeEventListener(listener);
+    }
+
+    public void deleteForumTopic(@NonNull FirebaseUser user, @NonNull String key) {
+        Preconditions.checkNotNull(user);
+        Preconditions.checkNotNull(key);
+
+        // Remove the value from both locations by setting value to null
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put(String.format("/%s/%s", TOPICS_KEY, key), null);
+        childUpdates.put(String.format("/%s/%s/%s", USER_TOPICS_KEY, user.getUid(), key), null);
+
+        mDatabase.updateChildren(childUpdates);
     }
 }
